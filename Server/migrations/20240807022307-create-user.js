@@ -25,7 +25,11 @@ module.exports = {
       },
       credit: {
         type: Sequelize.INTEGER,
-         defaultValue: 5
+        defaultValue: 5
+      },
+      photoImage: {
+        type: Sequelize.STRING,
+        defaultValue: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
       },
       createdAt: {
         allowNull: false,
