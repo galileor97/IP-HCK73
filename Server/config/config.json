@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "secret713",
+    "database": "Potret",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": null,
+    "database": "Potret-test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": null,
+    "database": "Potret",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
