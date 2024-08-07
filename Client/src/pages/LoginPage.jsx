@@ -8,18 +8,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const LoginPage = () => {
-
     const navigate = useNavigate()
 
+
     const [isVisible, setIsVisible] = React.useState(false);
-
     const toggleVisibility = () => setIsVisible(!isVisible);
-
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    console.log({ email, password });
+    // console.log({ email, password });
 
     const HandleLogin = async (e) => {
         e.preventDefault();
@@ -28,6 +26,7 @@ const LoginPage = () => {
             localStorage.setItem('token', data.access_token);
 
             console.log(data);
+            navigate('/')
         } catch (error) {
             console.log(error);
         }
@@ -75,7 +74,7 @@ const LoginPage = () => {
                                 />
                                 <Button type="submit" color="primary" size="lg" className="text-white px-32 mt-4">Login</Button>
                                 <Divider className="my-3" />
-                                <button type="button" className="px-16 bg-white flex items-center justify-center gap-4 py-2.5 px-4 text-sm tracking-wide text-gray-800 border border-gray-300 rounded-md bg-transparent hover:bg-gray-50 focus:outline-none">
+                                <button type="button" className="px-16 bg-white flex items-center justify-center gap-4 py-2.5 text-sm tracking-wide text-gray-800 border border-gray-300 rounded-md bg-transparent hover:bg-gray-50 focus:outline-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" className="inline" viewBox="0 0 512 512">
                                         <path fill="#fbbd00"
                                             d="M120 256c0-25.367 6.989-49.13 19.131-69.477v-86.308H52.823C18.568 144.703 0 198.922 0 256s18.568 111.297 52.823 155.785h86.308v-86.308C126.989 305.13 120 281.367 120 256z"
