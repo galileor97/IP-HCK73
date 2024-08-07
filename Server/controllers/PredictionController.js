@@ -84,7 +84,7 @@ class PredictionController {
         }
     }
 
-    static async prediction2(req, res) {
+    static async generateImage(req, res) {
         try {
             const input = {
                 base_image: "https://github.com/okaris/omni-zero/assets/1448702/2ca63443-c7f3-4ba6-95c1-2a341414865f",

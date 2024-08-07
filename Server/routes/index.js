@@ -13,6 +13,7 @@ const { isAuthorized } = require('../middleware/isAuthorized');
 
 router.post('/login', UserController.login)
 router.post('/register', UserController.register)
+router.post('/auth/google',UserController.googleAuth)
 
 
 router.post('/predict', isAuthenticate, upload.fields([
@@ -21,6 +22,7 @@ router.post('/predict', isAuthenticate, upload.fields([
     { name: 'identity_image', maxCount: 1 },
     { name: 'composition_image', maxCount: 1 },
 ]), PredictionController.createPrediction)
+router.post('/generate', isAuthenticate, PredictionController.generateImage)
 
 
 router.get('/images/:id', isAuthenticate, ImageController.findImageByPk)

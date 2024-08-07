@@ -1,8 +1,11 @@
 const { comparePassword } = require('../helper/bcrypt');
-const { signToken } = require('../helper/jwt');
+const { signToken, verifyToken } = require('../helper/jwt');
 const { User } = require('../models/index')
+const jwt = require('jsonwebtoken');
 
 
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client();
 
 class UserController {
 
@@ -51,6 +54,36 @@ class UserController {
         } catch (error) {
 
             next(error)
+        }
+    }
+
+    static async googleAuth(req, res) {
+        const { googleToken } = req.body;
+
+        try {
+            const ticket = await client.verifyIdToken({
+                idToken: googleToken,
+                audience: '407408718192.apps.googleusercontent.com',
+            });
+            const payload = ticket.getPayload();
+            const [user, created] = await User.findOrCreate({
+                where: { email: payload.email },
+                defaults: {
+
+                    username: payload.name,
+                    email: payload.email,
+                    picture: payload.picture,
+                    provider: 'google',
+                    password: 'google_id'
+                },
+                hooks: false
+            });
+
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
+            res.status(created ? 201 : 200).json({ access_token: token });
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ message: 'Internal server error' });
         }
     }
 
