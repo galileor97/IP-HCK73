@@ -3,8 +3,6 @@ const https = require('https');
 const { Image } = require('../models/index')
 const cloudinary = require('../helper/cloudinary')
 
-
-
 const ReplicateInstance = new Replicate();
 
 const downloadImage = (url) => {

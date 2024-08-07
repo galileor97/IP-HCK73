@@ -6,7 +6,7 @@ class ImageController {
     static async deleteImage(req, res, next) {
         try {
             let { id } = req.params
-            let image = await Image.searchByPk(id)
+            let image = await Image.findByPk(id)
 
             if (!image) {
                 throw { name: 'Not-Found' }
@@ -18,6 +18,20 @@ class ImageController {
             })
 
             res.status(200).json({ message: `Image with id ${id} successfully deleted` })
+        } catch (error) {
+            console.log(error);
+            next(error)
+        }
+    }
+    static async findImageByPk(req, res, next) {
+        try {
+            let { id } = req.params
+            let image = await Image.findByPk(id)
+
+            if (!image) {
+                throw { name: 'Not-Found' }
+            }
+            res.status(200).json({ image })
         } catch (error) {
             console.log(error);
             next(error)
