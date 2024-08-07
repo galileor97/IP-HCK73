@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { hashPassword } = require('../helper/bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,13 +13,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // User.hasMany()
-       User.hasMany(models.Image,{foreignKey:'userId'})
+      User.hasMany(models.Image, { foreignKey: 'userId' })
     }
   }
   User.init({
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: 'Email is already used'
+      },
       validate: {
         notNull: {
           args: true,
@@ -47,9 +52,13 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: 'Username is already used'
+      },
       validate: {
         notNull: {
-          args: true,
+          args: true, 
           msg: 'Username is required'
         },
         notEmpty: {
@@ -59,15 +68,18 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     credit: {
-      type:DataTypes.INTEGER,
-      min:{
-        args:0,
-        msg:'Unificient credit'
+      type: DataTypes.INTEGER,
+      min: {
+        args: 0,
+        msg: 'Unificient credit'
       }
     }
   }, {
     sequelize,
     modelName: 'User',
   });
+  User.beforeCreate((user) => {
+    user.password = hashPassword(user.password)
+  })
   return User;
 };
