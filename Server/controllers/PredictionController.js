@@ -33,7 +33,7 @@ class PredictionController {
             const { base_image, style_image, identity_image, composition_image } = req.files;
 
             if (!base_image || !style_image || !identity_image || !composition_image) {
-                return res.status(400).json({ error: 'All image fields are required.' });
+                return res.status(400).json({ message: 'All image fields are required.' });
             }
 
 
@@ -80,7 +80,8 @@ class PredictionController {
                 cloudinaryUrl: newImage.imageUrl,
             });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            next(error)
+            // res.status(500).json({ error: error.message });
         }
     }
 
