@@ -11,6 +11,7 @@ const DashboardPage = () => {
     const [identity_image, setIdentity_image] = useState(null);
     const [composition_image, setComposition_image] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [credit, setCredit] = useState()
 
     const handleGenerate = async (e) => {
         e.preventDefault()

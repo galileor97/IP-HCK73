@@ -10,8 +10,7 @@ const NavigationBar = () => {
 
     const navigate = useNavigate()
     const [user, setUser] = useState({})
-    const [credit, setCredit] = useState()
-    const [photoImage, setPhotoImage] = useState('')
+
 
     const getUser = async () => {
         try {
@@ -57,7 +56,7 @@ const NavigationBar = () => {
                         <Link to={'/gallery'} aria-current="page" color="secondary">
                             Gallery
                         </Link>
-                        <Chip className="ml-5 " color="warning" variant="dot">Dot</Chip>
+                        <Chip className="ml-5 " color="success" variant="dot">Your credit <b>{user.credit}</b></Chip>
                     </NavbarItem>
                     </div>
                     <Dropdown placement="bottom-end">
