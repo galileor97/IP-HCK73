@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 import api from "../helper/api";
 
-export default function ModalDelete({ id, onDelete, getAllImage }) {
+export default function ModalDelete({ id, getAllImage }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [backdrop, setBackdrop] = React.useState('blur')
 

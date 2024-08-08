@@ -2,7 +2,7 @@ import { Button, Card, CardFooter, Image } from '@nextui-org/react'
 import React from 'react'
 import ModalDelete from './ModalDelete';
 
-const CardComponent = ({ image, onDelete, getAllImage }) => {
+const CardComponent = ({ image, getAllImage }) => {
 
     // console.log(image);
     // console.log(image.imageUrl);
@@ -22,7 +22,7 @@ const CardComponent = ({ image, onDelete, getAllImage }) => {
                             dateStyle: 'full',
                         }).format(new Date(image.createdAt))}</p>
                     </div>
-                    <ModalDelete id={image.id} onDelete={onDelete} getAllImage={getAllImage} />
+                    <ModalDelete id={image.id}  getAllImage={getAllImage} />
                 </CardFooter>
             </Card>
         </div>
