@@ -3,6 +3,20 @@ const { Image } = require('../models/index')
 
 class ImageController {
 
+    static async getAllImage(req, res, next) {
+        const id = req.user.id
+        try {
+            let data = await Image.findAll({
+                where: { userId: id }
+            })
+
+            console.log(data);
+            res.status(200).json({ data })
+        } catch (error) {
+
+        }
+    }
+
     static async deleteImage(req, res, next) {
         try {
             let { id } = req.params

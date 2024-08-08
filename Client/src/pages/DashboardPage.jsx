@@ -1,21 +1,91 @@
 import React, { useState } from 'react'
-import { Button, Chip } from "@nextui-org/react";
+import { Button, Chip, Spinner } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
-
-
-
-const handleGenerate = async () => {
-    console.log('hello');
-}
-
+import axios from "axios";
 
 const DashboardPage = () => {
-
     const [generatedImage, setGeneratedImage] = useState('')
+    const [base_image, setBase_image] = useState(null);
+    const [style_image, setStyle_image] = useState(null);
+    const [identity_image, setIdentity_image] = useState(null);
+    const [composition_image, setComposition_image] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleGenerate = async (e) => {
+        e.preventDefault()
+        setIsLoading(true);
+
+        const formData = new FormData();
+        if (base_image) formData.append('base_image', base_image.file);
+        if (style_image) formData.append('style_image', style_image.file);
+        if (identity_image) formData.append('identity_image', identity_image.file);
+        if (composition_image) formData.append('composition_image', composition_image.file);
+
+        try {
+            let { data } = await axios.post('http://localhost:3000/predict', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzIzMDM3OTUzfQ.Z7YZpDcrL63zIxYJtyZYIRmJIsEuuaR2RoVtrXM_C38`
+                }
+            })
+            console.log(data);
+            setGeneratedImage(data.cloudinaryUrl);
+        } catch (error) {
+            console.log(error);
+            console.log(error.response);
+            console.log(error.response.data.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handleImageUpload = (e, setImage) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage({ file: file, preview: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const renderImageCard = (image, alt) => (
+        <Card
+            isFooterBlurred
+            radius="lg"
+            className="border-none max-w-fit"
+        >
+            <Image
+                alt={alt}
+                className="object-cover"
+                height={70}
+                src={image?.preview || "https://nextui.org/images/hero-card.jpeg"}
+                width={70}
+            />
+        </Card>
+    );
+
+    const handleOpenImage = () => {
+        if (generatedImage) {
+            window.open(generatedImage, '_blank');
+        }
+    };
+
+    const handleDownloadImage = () => {
+        if (generatedImage) {
+            const link = document.createElement('a');
+            link.href = generatedImage;
+            link.download = 'generated-image.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
+
     return (
         <>
             <Card className="max-w-full texture lg:px-24" radius='none'>
-                <div></div>
                 <CardHeader className="flex gap-3">
                     <div className="flex flex-col">
                         <p className="text-2xl pb-3">Omni-Zero [v1] </p>
@@ -28,6 +98,7 @@ const DashboardPage = () => {
                 </div>
                 <CardBody>
                     <Link
+                        className='max-w-fit'
                         isExternal
                         showAnchorIcon
                         href="https://github.com/okaris/omni-zero.git"
@@ -35,9 +106,9 @@ const DashboardPage = () => {
                         Visit on GitHub.
                     </Link>
                 </CardBody>
-
             </Card>
             <Divider />
+
             <div className='grid gap-y-5 lg:grid-cols-2 lg:px-24 lg:py-7 gap-x-10'>
                 <Card className="py-4">
                     <CardHeader className="pb-0 pt-2 px-6 flex-col items-start">
@@ -48,72 +119,31 @@ const DashboardPage = () => {
                                 <small className="text-default-500">Upload the requirement files</small>
                                 <form className='w-full pt-4' onSubmit={handleGenerate}>
                                     <div className='flex'>
-                                        <Card
-                                            isFooterBlurred
-                                            radius="lg"
-                                            className="border-none max-w-fit"
-                                        >
-                                            <Image
-                                                alt="Woman listing to music"
-                                                className="object-cover"
-                                                height={70}
-                                                src="https://nextui.org/images/hero-card.jpeg"
-                                                width={70}
-                                            />
-                                        </Card>
+                                        {renderImageCard(base_image, "Base Image")}
                                         <Divider orientation="vertical" className='px-1' />
-                                        <Card
-                                            isFooterBlurred
-                                            radius="lg"
-                                            className="border-none max-w-fit"
-                                        >
-                                            <Image
-                                                alt="Woman listing to music"
-                                                className="object-cover"
-                                                height={70}
-                                                src="https://nextui.org/images/hero-card.jpeg"
-                                                width={70}
-                                            />
-                                        </Card>
+                                        {renderImageCard(style_image, "Style Image")}
                                         <Divider orientation="vertical" className='px-1' />
-                                        <Card
-                                            isFooterBlurred
-                                            radius="lg"
-                                            className="border-none max-w-fit"
-                                        >
-                                            <Image
-                                                alt="Woman listing to music"
-                                                className="object-cover"
-                                                height={70}
-                                                src="https://nextui.org/images/hero-card.jpeg"
-                                                width={70}
-                                            />
-                                        </Card>
+                                        {renderImageCard(identity_image, "Identity Image")}
                                         <Divider orientation="vertical" className='px-1' />
-                                        <Card
-                                            isFooterBlurred
-                                            radius="lg"
-                                            className="border-none max-w-fit"
-                                        >
-                                            <Image
-                                                alt="Woman listing to music"
-                                                className="object-cover"
-                                                height={70}
-                                                src="https://nextui.org/images/hero-card.jpeg"
-                                                width={70}
-                                            />
-                                        </Card>
+                                        {renderImageCard(composition_image, "Composition Image")}
                                     </div>
-                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="small_size">Base Image</label>
-                                    <input className="block w-full p-2 mb-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="small_size" type="file" />
-                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="small_size">Style Image</label>
-                                    <input className="block w-full p-2 mb-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="small_size" type="file" />
-                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="small_size">Identity Image</label>
-                                    <input className="block w-full p-2 mb-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="small_size" type="file" />
-                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="small_size">Composition Image</label>
-                                    <input className="block w-full p-2 mb-4 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="small_size" type="file" />
-                                    <Button type="submit" color="primary" variant="solid" className='text-white px-10 mt-4'>
-                                        Generate
+                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="base_image">Base Image</label>
+                                    <input className="block w-full p-2 mb-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                                        id="base_image" type="file" onChange={(e) => handleImageUpload(e, setBase_image)} />
+
+                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="style_image">Style Image</label>
+                                    <input className="block w-full p-2 mb-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                                        id="style_image" type="file" onChange={(e) => handleImageUpload(e, setStyle_image)} />
+
+                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="identity_image">Identity Image</label>
+                                    <input className="block w-full p-2 mb-2 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                                        id="identity_image" type="file" onChange={(e) => handleImageUpload(e, setIdentity_image)} />
+
+                                    <label className="block mb-1 text-sm font-medium text-gray-900 pt-3" htmlFor="composition_image">Composition Image</label>
+                                    <input className="block w-full p-2 mb-4 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                                        id="composition_image" type="file" onChange={(e) => handleImageUpload(e, setComposition_image)} />
+                                    <Button type="submit" color="primary" variant="solid" className='text-white px-10 mt-4' disabled={isLoading}>
+                                        {isLoading ? 'Generating...' : 'Generate'}
                                     </Button>
                                 </form>
                             </CardHeader>
@@ -121,6 +151,7 @@ const DashboardPage = () => {
                     </CardHeader>
                     <small className="text-default-500 px-7 pt-5"> <strong>Hint: </strong>Upload the high quality image will have high quality result</small>
                 </Card>
+
                 {/* OUTPUT */}
                 <Card className="py-4">
                     <CardHeader className="pb-0 pt-2 px-6 flex-col items-start">
@@ -128,35 +159,44 @@ const DashboardPage = () => {
                         <Card className='w-full texture ' isBlurred>
                             <div className='w-full'>
                                 <div className='relative' style={{ paddingBottom: 'calc(1024 / 960 * 100%)' }}>
-                                    {generatedImage ? (
+                                    {isLoading ? (
+                                        <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
+                                            <Spinner size="lg" />
+                                        </div>
+                                    ) : generatedImage ? (
                                         <img
                                             src={generatedImage}
                                             alt="Generated image"
                                             className="object-cover w-full h-full absolute top-0 left-0"
                                         />
-                                    ) : (<div className="w-full h-full absolute top-0 left-0  flex items-center justify-center">
-                                        <p className="text-gray-400">Waiting for your input ... </p>
-                                    </div>)}
+                                    ) : (
+                                        <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
+                                            <p className="text-gray-400">Waiting for your input ... </p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </Card>
-                        {generatedImage ? (
+                        {generatedImage && !isLoading ? (
                             <div>
                                 <Divider orientation='horizontal' className='my-2' />
                                 <div className='flex gap-x-2'>
-                                    <Button color="primary" variant="faded" className='pt-'>
+                                    <Button color="primary" variant="faded" onClick={handleOpenImage}>
                                         Open
                                     </Button>
-                                    <Button color="primary" variant="faded" className='pt-'>
+                                    <Button color="primary" variant="faded" onClick={handleDownloadImage}>
                                         Download
                                     </Button>
                                 </div>
                             </div>
-                        ) : (<small className="text-default-500 px-2 pt-5">Credit will be reduce once inference is done.</small>)}
+                        ) : (
+                            <small className="text-default-500 px-2 pt-5">
+                                {isLoading ? 'Generating image...' : 'Credit will be reduced once inference is done.'}
+                            </small>
+                        )}
                     </CardHeader>
                 </Card>
             </div>
-
         </>
     )
 }
