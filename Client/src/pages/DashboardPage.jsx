@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Button, Chip, Spinner } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
-import axios from "axios";
 import api from '../helper/api';
+import Swal from 'sweetalert2'
 
 const DashboardPage = () => {
+
     const [generatedImage, setGeneratedImage] = useState('')
     const [base_image, setBase_image] = useState(null);
     const [style_image, setStyle_image] = useState(null);
@@ -12,6 +13,8 @@ const DashboardPage = () => {
     const [composition_image, setComposition_image] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [credit, setCredit] = useState()
+    const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+
 
     const handleGenerate = async (e) => {
         e.preventDefault()
@@ -26,7 +29,7 @@ const DashboardPage = () => {
 
         try {
 
-            let { data } = await api.post('http://localhost:3000/predict', formData, {
+            let { data } = await api.post('/predict', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -35,9 +38,21 @@ const DashboardPage = () => {
             console.log(data);
             setGeneratedImage(data.cloudinaryUrl);
         } catch (error) {
-            console.log(error);
-            console.log(error.response);
-            console.log(error.response.data.message);
+            if (error.response) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: error.response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong!',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            }
         } finally {
             setIsLoading(false);
         }
@@ -84,6 +99,43 @@ const DashboardPage = () => {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+    };
+
+    const handlePhotoUpdate = async () => {
+        if (generatedImage) {
+            setIsUpdatingProfile(true);
+            try {
+                const response = await api.put('/user/profile-photo', { photoUrl: generatedImage }, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                // console.log('Profile photo updated:', response.data);
+                Swal.fire({
+                    title: 'Alright!',
+                    text: 'Update photo profile success',
+                    icon: 'success'
+                })
+            } catch (error) {
+                if (error.response) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: error.response.data.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Something went wrong!',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                }
+            } finally {
+                setIsUpdatingProfile(false);
+            }
         }
     };
 
@@ -190,6 +242,14 @@ const DashboardPage = () => {
                                     </Button>
                                     <Button color="default" variant="ghost" onClick={handleDownloadImage}>
                                         Download
+                                    </Button>
+                                    <Button
+                                        color="default"
+                                        variant="ghost"
+                                        onClick={handlePhotoUpdate}
+                                        disabled={isUpdatingProfile}
+                                    >
+                                        {isUpdatingProfile ? 'Updating...' : 'Update Photo Profile'}
                                     </Button>
                                 </div>
                             </div>

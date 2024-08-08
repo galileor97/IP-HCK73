@@ -28,7 +28,21 @@ const RegisterPage = () => {
             // console.log(data);
             navigate('/login')
         } catch (error) {
-            console.log(error);
+            if (error.response) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: error.response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong!',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            }
         }
     }
     return (

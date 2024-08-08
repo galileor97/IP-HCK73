@@ -6,6 +6,7 @@ import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../components/GoogleLogin";
 import api from "../helper/api";
+import Swal from 'sweetalert2'
 
 
 const LoginPage = () => {
@@ -28,7 +29,21 @@ const LoginPage = () => {
             // console.log(data);
             navigate('/')
         } catch (error) {
-            console.log(error);
+            if (error.response) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: error.response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong!',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                })
+            }
         }
     }
     return (
