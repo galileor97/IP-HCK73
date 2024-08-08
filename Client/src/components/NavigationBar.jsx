@@ -1,11 +1,15 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, } from "@nextui-org/navbar";
 import { Avatar, Dropdown, DropdownItem, DropdownTrigger, DropdownMenu } from "@nextui-org/react";
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 
 
 
 const NavigationBar = () => {
+    const [credit, setCredit] = useState()
+    const [photoImage, setPhotoImage] = useState('')
+
+
     return (
         <>
             <Navbar isBlurred maxWidth="xl" height={'53px'} isBordered className="bg-[#f5f5f5]">
@@ -14,25 +18,19 @@ const NavigationBar = () => {
                     <p className="font-bold uppercase text-inherit">Portraits</p>
                 </NavbarBrand>
 
-                <NavbarContent className="hidden sm:flex gap-4" justify="end">
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Features
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem isActive>
-                        <Link href="#" aria-current="page" color="secondary">
-                            Customers
-                        </Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link color="foreground" href="#">
-                            Integrations
-                        </Link>
-                    </NavbarItem>
-                </NavbarContent>
+
 
                 <NavbarContent as="div" justify="end">
+                    <NavbarItem>
+                        <Link color="foreground" to={'/'}>
+                            Home
+                        </Link>
+                    </NavbarItem>
+                    <NavbarItem >
+                        <Link to={'/gallery'} aria-current="page" color="secondary">
+                            Gallery
+                        </Link>
+                    </NavbarItem>
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger>
                             <Avatar

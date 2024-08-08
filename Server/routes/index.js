@@ -21,6 +21,8 @@ router.post('/register', UserController.register)
 router.post('/auth/google',UserController.googleAuth)
 
 
+router.get('/user',isAuthenticate, UserController.getUserById)
+
 router.post('/predict', isAuthenticate, upload.fields([
     { name: 'base_image', maxCount: 1 },
     { name: 'style_image', maxCount: 1 },

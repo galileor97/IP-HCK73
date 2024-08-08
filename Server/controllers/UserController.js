@@ -4,17 +4,30 @@ const { User } = require('../models/index')
 const jwt = require('jsonwebtoken');
 
 
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client();
 
 class UserController {
 
-    static async getAllUser(req, res) {
+    static async getAllUser(req, res, next) {
         try {
             let users = await User.findAll()
             res.send(users)
         } catch (error) {
             res.send(error.message)
+            next(error)
+        }
+    }
+
+    static async getUserById(req, res, next) {
+        try {
+            const { id } = req.user
+            let user = await User.findByPk(+id)
+
+            res.status(201).json({ user })
+        } catch (error) {
+            console.log(error);
+            next(error)
         }
     }
 

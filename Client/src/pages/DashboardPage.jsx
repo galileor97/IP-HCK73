@@ -184,10 +184,10 @@ const DashboardPage = () => {
                             <div>
                                 <Divider orientation='horizontal' className='my-2' />
                                 <div className='flex gap-x-2'>
-                                    <Button color="primary" variant="faded" onClick={handleOpenImage}>
+                                    <Button color="default" variant="ghost" onClick={handleOpenImage}>
                                         Open
                                     </Button>
-                                    <Button color="primary" variant="faded" onClick={handleDownloadImage}>
+                                    <Button color="default" variant="ghost" onClick={handleDownloadImage}>
                                         Download
                                     </Button>
                                 </div>
