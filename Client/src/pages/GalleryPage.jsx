@@ -16,13 +16,15 @@ const GalleryPage = () => {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 }
             });
-
+            console.log(data);
             setImages(data)
         } catch (error) {
             console.log(error);
             console.log(error.response);
         }
     }
+
+    
 
     useEffect(() => {
         getAllImage();
@@ -43,7 +45,7 @@ const GalleryPage = () => {
                 {
                     images.data?.map(image => {
                         return (
-                            <CardComponent key={image.id} image={image} />
+                            <CardComponent key={image.id} image={image} getAllImage={getAllImage} />
                         )
                     })
                 }

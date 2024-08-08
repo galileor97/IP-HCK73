@@ -2,24 +2,7 @@ import { Button, Card, CardFooter, Image } from '@nextui-org/react'
 import React from 'react'
 import ModalDelete from './ModalDelete';
 
-const CardComponent = ({ image }) => {
-    const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0, 200));
-
-    // request a weekday along with a long date
-    let options = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    };
-
-    const handleDelete = async (id) => {
-        try {
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
+const CardComponent = ({ image, onDelete, getAllImage }) => {
 
     // console.log(image);
     // console.log(image.imageUrl);
@@ -39,10 +22,7 @@ const CardComponent = ({ image }) => {
                             dateStyle: 'full',
                         }).format(new Date(image.createdAt))}</p>
                     </div>
-                    <Button className="text-tiny" radius="full" size="sm">
-                        Delete
-                    </Button>
-                    <ModalDelete />
+                    <ModalDelete id={image.id} onDelete={onDelete} getAllImage={getAllImage} />
                 </CardFooter>
             </Card>
         </div>
