@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const NavigationBar = () => {
     return (
         <>
-            <Navbar maxWidth="xl" height={'53px'} isBordered className="bg-[#f5f5f5]">
+            <Navbar isBlurred maxWidth="xl" height={'53px'} isBordered className="bg-[#f5f5f5]">
                 <NavbarBrand>
 
                     <p className="font-bold uppercase text-inherit">Portraits</p>

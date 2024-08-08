@@ -7,13 +7,15 @@ class ImageController {
         const id = req.user.id
         try {
             let data = await Image.findAll({
-                where: { userId: id }
+                where: { userId: id },
+                order: [['createdAt', 'DESC']]
             })
 
             console.log(data);
             res.status(200).json({ data })
         } catch (error) {
-
+            console.log(error);
+            next(error)
         }
     }
 

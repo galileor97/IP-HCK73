@@ -5,7 +5,7 @@ const { User } = require('../models')
 async function isAuthenticate(req, res, next) {
     try {
 
-        // console.log(req.headers);
+        console.log(req.headers);
         let access_token = req.headers.authorization
 
         if (!access_token) {

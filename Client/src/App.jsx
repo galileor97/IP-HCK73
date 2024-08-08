@@ -9,6 +9,7 @@ import './App.css'
 import LoginPage from './pages/LoginPage'
 import MainLayout from './pages/MainLayout';
 import DashboardPage from './pages/DashboardPage';
+import GalleryPage from './pages/GalleryPage';
 
 const router = createBrowserRouter([
   {
@@ -19,14 +20,32 @@ const router = createBrowserRouter([
         element: <DashboardPage />
       },
       {
+        path: '/gallery',
+        element: <GalleryPage />
+      },
+      {
         path: '*',
         element: <h1>Not Found 404</h1>
       },
-    ]
+    ],
+    loader: () => {
+      if (!localStorage.getItem('access_token')) {
+        return redirect('/login')
+      }
+
+      return null;
+    }
   },
   {
     path: '/login',
-    element: <LoginPage />
+    element: <LoginPage />,
+    loader: () => {
+      if (localStorage.getItem('access_token')) {
+        return redirect('/')
+      }
+
+      return null;
+    }
   }
 ])
 

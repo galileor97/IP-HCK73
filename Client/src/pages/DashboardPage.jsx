@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Chip, Spinner } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
 import axios from "axios";
+import api from '../helper/api';
 
 const DashboardPage = () => {
     const [generatedImage, setGeneratedImage] = useState('')
@@ -21,11 +22,13 @@ const DashboardPage = () => {
         if (identity_image) formData.append('identity_image', identity_image.file);
         if (composition_image) formData.append('composition_image', composition_image.file);
 
+
         try {
-            let { data } = await axios.post('http://localhost:3000/predict', formData, {
+
+            let { data } = await api.post('http://localhost:3000/predict', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzIzMDM3OTUzfQ.Z7YZpDcrL63zIxYJtyZYIRmJIsEuuaR2RoVtrXM_C38`
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`
                 }
             })
             console.log(data);

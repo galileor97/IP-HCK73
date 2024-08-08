@@ -63,7 +63,7 @@ class UserController {
         try {
             const ticket = await client.verifyIdToken({
                 idToken: googleToken,
-                audience: '407408718192.apps.googleusercontent.com',
+                audience: process.env.GOOGLE_CLIENT_ID,
             });
             const payload = ticket.getPayload();
             const [user, created] = await User.findOrCreate({
