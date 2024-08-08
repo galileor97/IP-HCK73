@@ -1,15 +1,39 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, } from "@nextui-org/navbar";
 import { Avatar, Dropdown, DropdownItem, DropdownTrigger, DropdownMenu } from "@nextui-org/react";
-import React, { useState } from 'react'
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import api from "../helper/api";
 
 
 
 const NavigationBar = () => {
+
+    const navigate = useNavigate()
+    const [user, setUser] = useState({})
     const [credit, setCredit] = useState()
     const [photoImage, setPhotoImage] = useState('')
 
+    const getUser = async () => {
+        try {
+            const { data } = await api({
+                url: '/user',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
 
+
+            console.log(data);
+            setUser(data.user)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    }, []);
     return (
         <>
             <Navbar isBlurred maxWidth="xl" height={'53px'} isBordered className="bg-[#f5f5f5]">
@@ -41,27 +65,23 @@ const NavigationBar = () => {
                                 color="primary"
                                 name="Jason Hughes"
                                 size="sm"
-                                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                src={user.photo}
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="profile" className="h-14 gap-2">
                                 <p className="font-semibold">Signed in as</p>
-                                <p className="font-semibold">zoey@example.com</p>
+                                <p className="font-semibold">{user.email}</p>
                             </DropdownItem>
                             <DropdownItem key="settings">My Settings</DropdownItem>
-                            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-                            <DropdownItem key="analytics">Analytics</DropdownItem>
-                            <DropdownItem key="system">System</DropdownItem>
-                            <DropdownItem key="configurations">Configurations</DropdownItem>
                             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                            <DropdownItem key="logout" color="danger">
+                            <DropdownItem onClick={() => { localStorage.removeItem('access_token'); navigate('/login') }} key="logout" color="danger">
                                 Log Out
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </NavbarContent>
-            </Navbar>
+            </Navbar >
         </>
     )
 }

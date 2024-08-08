@@ -73,6 +73,9 @@ module.exports = (sequelize, DataTypes) => {
         args: 0,
         msg: 'Unificient credit'
       }
+    },
+    photo: {
+      type: DataTypes.STRING
     }
   }, {
     sequelize,

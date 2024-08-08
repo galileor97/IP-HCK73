@@ -85,7 +85,7 @@ class UserController {
 
                     username: payload.name,
                     email: payload.email,
-                    picture: payload.picture,
+                    photo: payload.picture,
                     provider: 'google',
                     password: 'google_id'
                 },
