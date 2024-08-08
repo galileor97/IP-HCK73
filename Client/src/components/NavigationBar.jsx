@@ -1,5 +1,5 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, } from "@nextui-org/navbar";
-import { Avatar, Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Divider } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownTrigger, DropdownMenu } from "@nextui-org/react";
 import React from 'react'
 import { Link } from "react-router-dom";
 
@@ -11,34 +11,36 @@ const NavigationBar = () => {
             <Navbar maxWidth="xl" height={'53px'} isBordered className="bg-[#f5f5f5]">
                 <NavbarBrand>
 
-                    <p className="font-bold text-inherit">Potrait</p>
+                    <p className="font-bold uppercase text-inherit">Portraits</p>
                 </NavbarBrand>
 
-
-                <NavbarContent as="div" justify="end">
+                <NavbarContent className="hidden sm:flex gap-4" justify="end">
                     <NavbarItem>
-                        <Link color="secondary" href="#">
+                        <Link color="foreground" href="#">
                             Features
                         </Link>
                     </NavbarItem>
-                    <NavbarItem>
-                        <Link href="#" color="secondary">
+                    <NavbarItem isActive>
+                        <Link href="#" aria-current="page" color="secondary">
                             Customers
                         </Link>
                     </NavbarItem>
                     <NavbarItem>
-                        <Link color="secondary" href="#">
+                        <Link color="foreground" href="#">
                             Integrations
                         </Link>
                     </NavbarItem>
-                    <Divider orientation="vertical" />
+                </NavbarContent>
+
+                <NavbarContent as="div" justify="end">
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger>
                             <Avatar
+                                radius="md"
                                 isBordered
                                 as="button"
                                 className="transition-transform"
-                                color="secondary"
+                                color="primary"
                                 name="Jason Hughes"
                                 size="sm"
                                 src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
