@@ -9,6 +9,20 @@ const client = new OAuth2Client();
 
 class UserController {
 
+    static async editPhoto(req, res, next) {
+        try {
+            const { id } = req.user
+            const { photoUrl } = req.body
+            // console.log(id, photoUrl);
+            let user = await User.findByPk(+id)
+            await user.update({ photo: photoUrl });
+            res.status(200).json({ message: "Profile photo updated successfully", user });
+        } catch (error) {
+            res.send(error.message)
+            next(error)
+        }
+    }
+
     static async getAllUser(req, res, next) {
         try {
             let users = await User.findAll()

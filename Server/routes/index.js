@@ -22,6 +22,7 @@ router.post('/auth/google',UserController.googleAuth)
 
 
 router.get('/user',isAuthenticate, UserController.getUserById)
+router.put('/user/profile-photo', isAuthenticate, UserController.editPhoto)
 
 router.post('/predict', isAuthenticate, upload.fields([
     { name: 'base_image', maxCount: 1 },
