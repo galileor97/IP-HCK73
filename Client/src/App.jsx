@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage'
 import MainLayout from './pages/MainLayout';
 import DashboardPage from './pages/DashboardPage';
 import GalleryPage from './pages/GalleryPage';
+import RegisterPage from './pages/RegisterPage';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,17 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+    loader: () => {
+      if (localStorage.getItem('access_token')) {
+        return redirect('/')
+      }
+
+      return null;
+    }
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
     loader: () => {
       if (localStorage.getItem('access_token')) {
         return redirect('/')

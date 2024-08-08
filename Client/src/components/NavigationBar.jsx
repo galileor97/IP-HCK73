@@ -1,5 +1,5 @@
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, } from "@nextui-org/navbar";
-import { Avatar, Dropdown, DropdownItem, DropdownTrigger, DropdownMenu } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownTrigger, DropdownMenu, Chip } from "@nextui-org/react";
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import api from "../helper/api";
@@ -38,13 +38,16 @@ const NavigationBar = () => {
         <>
             <Navbar isBlurred maxWidth="xl" height={'53px'} isBordered className="bg-[#f5f5f5]">
                 <NavbarBrand>
-
+                    <Link to={'/'}>
                     <p className="font-bold uppercase text-inherit">Portraits</p>
+                    </Link>
                 </NavbarBrand>
 
 
 
                 <NavbarContent as="div" justify="end">
+                    <div className="hidden lg:flex gap-x-4">
+
                     <NavbarItem>
                         <Link color="foreground" to={'/'}>
                             Home
@@ -54,7 +57,9 @@ const NavigationBar = () => {
                         <Link to={'/gallery'} aria-current="page" color="secondary">
                             Gallery
                         </Link>
+                        <Chip className="ml-5 " color="warning" variant="dot">Dot</Chip>
                     </NavbarItem>
+                    </div>
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger>
                             <Avatar
