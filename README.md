@@ -105,6 +105,7 @@ User Management
 - Method: GET
 - Description: Get a list of all users (potentially admin&only)
 & Authentication: Required
+
 *Response (200 & OK)*
 Array of user objects
 Image Management
@@ -113,6 +114,7 @@ Image Management
 - Method: GET
 - Description: Get all images for the authenticated user
 - Authentication: Required
+
 *Response (200 & OK)*
 ```json
 {
@@ -133,7 +135,9 @@ Image Management
 - Description: Delete a specific image
 - Authentication: Required
 - Parameters: id [number] - Image ID
+
 *Response (200 & OK)*
+
 ```json
 {
 "message": "Image with id <id> successfully deleted"
@@ -145,6 +149,7 @@ Image Management
 - Description: Get details of a specific image
 - Authentication: Required
 - Parameters: id [number] - Image ID
+
 *Response (200 & OK)*
 ```json
 {
@@ -168,6 +173,8 @@ Prediction
 - style_image: File
 - identity_image: File
 - composition_image: File
+
+
 *Response (200 & OK)*
 ```json
 {
