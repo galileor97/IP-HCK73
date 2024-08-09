@@ -21,6 +21,7 @@ const LoginPage = () => {
     // console.log({ email, password });
 
     const HandleLogin = async (e) => {
+        console.log('object');
         e.preventDefault();
         try {
             let { data } = await api.post(`/login`, { email, password });
@@ -29,6 +30,7 @@ const LoginPage = () => {
             // console.log(data);
             navigate('/')
         } catch (error) {
+            console.log(error);
             if (error.response) {
                 Swal.fire({
                     title: 'Error!',
