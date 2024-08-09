@@ -13,14 +13,9 @@ const newUser = {
 }
 
 beforeAll(async () => {
-
-    // await User.create(newUser)
     let user = await User.create(newUser)
     token = signToken({ id: user.id })
-
 })
-
-// console.log(token);
 
 afterAll(async () => {
     await User.destroy({
@@ -30,14 +25,12 @@ afterAll(async () => {
     });
 });
 
-
 describe('POST /login', () => {
     describe('Success', () => {
-        test('When login success  should return status 201 and send access_token', async () => {
+        test('When login success should return status 201 and send access_token', async () => {
             let login = {
                 "email": "jane.smith@example.com",
                 "password": "hashedpassword456"
-
             }
             let response = await request(app)
                 .post('/login')
@@ -48,6 +41,7 @@ describe('POST /login', () => {
             expect(typeof response.body.access_token).toBe('string')
         });
     });
+
     describe('Failed', () => {
         test('When email is not provided should return status 400 and get message Email and Password is required', async () => {
             const loginData = {
@@ -61,6 +55,7 @@ describe('POST /login', () => {
             expect(response.status).toBe(400)
             expect(response.body).toHaveProperty('message', 'Email and Password is required')
         });
+
         test('When password is not provided should return status 400 and get message Email and Password is required', async () => {
             const loginData = {
                 "email": "jane.smith@example.com"
@@ -74,7 +69,7 @@ describe('POST /login', () => {
             expect(response.body).toHaveProperty('message', 'Email and Password is required')
         });
         
-        test('When email is provided and not match should return status 401 and get message Email and Password is incorrect', async () => {
+        test('When email is provided and not match should return status 401 and get message Email or Password is incorrect', async () => {
             const loginData = {
                 "email": "janes.smith@example.com",
                 "password": "hashedpassword456"
@@ -87,7 +82,7 @@ describe('POST /login', () => {
             expect(response.body).toHaveProperty('message', 'Email or Password is incorrect')
         });
 
-        test('When password is provided and not match should return status 401 and get message Email and Password is incorrect', async () => {
+        test('When password is provided and not match should return status 401 and get message Email or Password is incorrect', async () => {
             const loginData = {
                 "email": "jane.smith@example.com",
                 "password": "hashedpassword4562"
@@ -100,5 +95,46 @@ describe('POST /login', () => {
             expect(response.body).toHaveProperty('message', 'Email or Password is incorrect')
         });
     });
-
 });
+
+describe('POST /register', () => {
+    test('POST /register success should return id, username, and email', async () => {
+        let response = await request(app).post('/register').send({
+            username: "hoshi",
+            email: "hoshi@example.com",
+            password: "horanghae"
+        })
+        expect(response.status).toBe(201)
+        expect(response.body).toBeInstanceOf(Object)
+        expect(response.body).toHaveProperty("id", expect.any(Number))
+    })
+
+    test('POST /register failed should return error message if username is null', async () => {
+        let response = await request(app).post('/register').send({
+            username: "",
+            email: "hoshi@example.com",
+            password: "horanghae"
+        })
+        expect(response.status).toBe(400)
+
+    })
+
+    test('POST /register failed should return error message if email is null', async () => {
+        let response = await request(app).post('/register').send({
+            username: "hoshi",
+            email: "",
+            password: "horanghae"
+        })
+        expect(response.status).toBe(400)
+    })
+
+    test('POST /register failed should return error message if password is null', async () => {
+        let response = await request(app).post('/register').send({
+            username: "hoshi",
+            email: "hoshi@example.com",
+            password: ""
+        })
+        expect(response.status).toBe(400)
+        expect(response.body).toBeInstanceOf(Object)
+    })
+})
