@@ -66,6 +66,7 @@ User Management
 - Method: GET
 - Description: Get the profile of the authenticated user
 - Authentication: Required
+  
 *Response (201 & Created)*
 ```json
 {
@@ -169,7 +170,7 @@ Prediction
 - Description: Generate a prediction based on uploaded images
 - Authentication: Required
 ### Request Body: Form&data with image files
-& base_image: File
+- base_image: File
 - style_image: File
 - identity_image: File
 - composition_image: File
