@@ -6,6 +6,7 @@ import { EyeSlashFilledIcon } from "../components/EyeSlashFilledIcon";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleLogin from "../components/GoogleLogin";
 import api from "../helper/api";
+import Swal from 'sweetalert2'
 
 
 const RegisterPage = () => {
